@@ -37,7 +37,7 @@ export class StockComponent implements OnInit {
   metaDataInfo: string; metaDataLastRefreshed: string; metaDataInterval: string; metaDataTimezone: string;
   stockData: StockData = new StockData;
   isLoading = true ;
-  loadGIF = '../assets/img/loading.gif';
+  loadGIF = 'assets/img/loading.gif';
   tsData: TimeSeriesData[]= new Array<TimeSeriesData>();
   sum: number;
 
