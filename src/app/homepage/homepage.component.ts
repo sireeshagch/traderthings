@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-homepage',
@@ -8,13 +8,13 @@ import { Router } from "@angular/router";
 })
 export class HomepageComponent implements OnInit {
 
-  //image URLs
-  carousel1:string = "../assets/img/markets.jpg";
-  carousel2:string = "../assets/img/stock.jpg";
-  carousel3:string = "../assets/img/bit.jpg";
-  rules:string = "../assets/img/rules.jpg";
-  bitcoin:string = "../assets/img/bitcoin-thumb.jpg";
-  stock:string = "../assets/img/stocktrends.jpg";
+  // image URLs
+  carousel1 = '../assets/img/markets.jpg';
+  carousel2 = '../assets/img/stock.jpg';
+  carousel3 = '../assets/img/bit.jpg';
+  rules = '../assets/img/rules.jpg';
+  bitcoin = '../assets/img/bitcoin-thumb.jpg';
+  stock = '../assets/img/stocktrends.jpg';
 
   constructor(private router: Router) { }
 
@@ -22,15 +22,15 @@ export class HomepageComponent implements OnInit {
   }
 
   navigateToStock() {
-    this.router.navigate(["stock"]);
+    this.router.navigate(['stock']);
   }
   navigateToCrypto() {
-    this.router.navigate(["crypto"]);
+    this.router.navigate(['crypto']);
   }
   navigateToRules() {
-    this.router.navigate(["rules"]);
+    this.router.navigate(['rules']);
   }
   public navigateToHome() {
-    this.router.navigate(["home"]);
+    this.router.navigate(['home']);
   }
 }
