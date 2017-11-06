@@ -10,11 +10,11 @@ export class HomepageComponent implements OnInit {
 
   // image URLs
   carousel1 = 'assets/img/markets.jpg';
-  carousel2 = '/assets/img/stock.jpg';
-  carousel3 = '../assets/img/bit.jpg';
-  rules = '../assets/img/rules.jpg';
-  bitcoin = '../assets/img/bitcoin-thumb.jpg';
-  stock = '../assets/img/stocktrends.jpg';
+  carousel2 = 'assets/img/stock.jpg';
+  carousel3 = 'assets/img/bit.jpg';
+  rules = 'assets/img/rules.jpg';
+  bitcoin = 'assets/img/bitcoin-thumb.jpg';
+  stock = 'assets/img/stocktrends.jpg';
 
   constructor(private router: Router) { }
 
