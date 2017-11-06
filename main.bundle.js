@@ -69,45 +69,45 @@ var AppComponent = (function () {
         this.router = router;
         this.title = 'app';
         this.isLoggedIn = false;
-        //User image URL
-        this.userimg = "../assets/img/user.png";
+        // User image URL
+        this.userimg = '../assets/img/user.png';
         this.authService.afAuth.authState.subscribe(function (auth) {
             if (auth == null) {
                 _this.isLoggedIn = false;
-                _this.router.navigate(["home"]);
-                console.log("Failed : " + _this.isLoggedIn);
+                _this.router.navigate(['home']);
+                console.log('Failed : ' + _this.isLoggedIn);
             }
             else {
                 _this.isLoggedIn = true;
-                _this.router.navigate(["home"]);
-                console.log("Logged in : " + _this.isLoggedIn);
+                _this.router.navigate(['home']);
+                console.log('Logged in : ' + _this.isLoggedIn);
             }
         });
     }
     AppComponent.prototype.navigateToStock = function () {
-        this.router.navigate(["stock"]);
+        this.router.navigate(['stock']);
     };
     AppComponent.prototype.navigateToCrypto = function () {
-        this.router.navigate(["crypto"]);
+        this.router.navigate(['crypto']);
     };
     AppComponent.prototype.navigateToRules = function () {
-        this.router.navigate(["rules"]);
+        this.router.navigate(['rules']);
     };
     AppComponent.prototype.navigateToHome = function () {
-        this.router.navigate(["home"]);
+        this.router.navigate(['home']);
     };
     AppComponent.prototype.login = function () {
         var _this = this;
         this.authService.loginWithGoogle().then(function (data) {
-            _this.router.navigate(["home"]);
+            _this.router.navigate(['home']);
         });
     };
     AppComponent.prototype.logout = function () {
         this.authService.logout();
-        this.router.navigate(["home"]);
+        this.router.navigate(['home']);
     };
     AppComponent.prototype.onSubmit = function () {
-        console.log(this.user + ".." + this.pswd);
+        console.log(this.user + ' ' + this.pswd);
     };
     return AppComponent;
 }());
@@ -224,10 +224,10 @@ AppModule = __decorate([
 
 
 var AppRoutes = [
-    { path: "home", component: __WEBPACK_IMPORTED_MODULE_0__homepage_homepage_component__["a" /* HomepageComponent */] },
-    { path: "stock", component: __WEBPACK_IMPORTED_MODULE_1__stock_stock_component__["a" /* StockComponent */] },
-    { path: "crypto", component: __WEBPACK_IMPORTED_MODULE_2__crypto_crypto_component__["a" /* CryptoComponent */] },
-    { path: "rules", component: __WEBPACK_IMPORTED_MODULE_3__rules_rules_component__["a" /* RulesComponent */] }
+    { path: 'home', component: __WEBPACK_IMPORTED_MODULE_0__homepage_homepage_component__["a" /* HomepageComponent */] },
+    { path: 'stock', component: __WEBPACK_IMPORTED_MODULE_1__stock_stock_component__["a" /* StockComponent */] },
+    { path: 'crypto', component: __WEBPACK_IMPORTED_MODULE_2__crypto_crypto_component__["a" /* CryptoComponent */] },
+    { path: 'rules', component: __WEBPACK_IMPORTED_MODULE_3__rules_rules_component__["a" /* RulesComponent */] }
 ];
 var AppComponents = [
     __WEBPACK_IMPORTED_MODULE_0__homepage_homepage_component__["a" /* HomepageComponent */],
@@ -346,27 +346,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var HomepageComponent = (function () {
     function HomepageComponent(router) {
         this.router = router;
-        //image URLs
-        this.carousel1 = "../assets/img/markets.jpg";
-        this.carousel2 = "../assets/img/stock.jpg";
-        this.carousel3 = "../assets/img/bit.jpg";
-        this.rules = "../assets/img/rules.jpg";
-        this.bitcoin = "../assets/img/bitcoin-thumb.jpg";
-        this.stock = "../assets/img/stocktrends.jpg";
+        // image URLs
+        this.carousel1 = '../assets/img/markets.jpg';
+        this.carousel2 = '../assets/img/stock.jpg';
+        this.carousel3 = '../assets/img/bit.jpg';
+        this.rules = '../assets/img/rules.jpg';
+        this.bitcoin = '../assets/img/bitcoin-thumb.jpg';
+        this.stock = '../assets/img/stocktrends.jpg';
     }
     HomepageComponent.prototype.ngOnInit = function () {
     };
     HomepageComponent.prototype.navigateToStock = function () {
-        this.router.navigate(["stock"]);
+        this.router.navigate(['stock']);
     };
     HomepageComponent.prototype.navigateToCrypto = function () {
-        this.router.navigate(["crypto"]);
+        this.router.navigate(['crypto']);
     };
     HomepageComponent.prototype.navigateToRules = function () {
-        this.router.navigate(["rules"]);
+        this.router.navigate(['rules']);
     };
     HomepageComponent.prototype.navigateToHome = function () {
-        this.router.navigate(["home"]);
+        this.router.navigate(['home']);
     };
     return HomepageComponent;
 }());
@@ -657,12 +657,12 @@ var StockComponent = (function () {
         this.stockService = stockService;
         this.pagerService = pagerService;
         this.router = router;
-        this.item = "Stocks";
+        this.item = 'Stocks';
         this.pager = {}; // pager object
-        this.apiKey = "80VEEF48E6H7Z2VC";
+        this.apiKey = '80VEEF48E6H7Z2VC';
         this.stockData = new __WEBPACK_IMPORTED_MODULE_4__StockData__["a" /* StockData */];
         this.isLoading = true;
-        this.loadGIF = "../assets/img/loading.gif";
+        this.loadGIF = '../assets/img/loading.gif';
         this.tsData = new Array();
     }
     StockComponent.prototype.setPage = function (page) {
@@ -693,7 +693,8 @@ var StockComponent = (function () {
     StockComponent.prototype.fetchStockDetails = function (clickedStock) {
         var _this = this;
         this.clickedSymbol = clickedStock.Symbol;
-        this.minDataURL = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + this.clickedSymbol + "&interval=1min&apikey=" + this.apiKey;
+        this.minDataURL = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=' +
+            this.clickedSymbol + '&interval=1min&apikey=' + this.apiKey;
         this.stockService.getMinuteData(this.minDataURL)
             .subscribe(function (minuteData) {
             _this.minuteData = minuteData;
@@ -703,18 +704,20 @@ var StockComponent = (function () {
             _this.metaDataTimezone = _this.minuteData['Meta Data']['6. Time Zone'];
             _this.populateStockData(_this.metaDataInfo, _this.clickedSymbol, _this.metaDataLastRefreshed, _this.metaDataInterval, _this.metaDataTimezone);
             var j = 0;
+            // tslint:disable-next-line:forin
             for (var i in _this.minuteData['Time Series (1min)']) {
                 _this.tsData[j] = new __WEBPACK_IMPORTED_MODULE_5__TimeSeriesData__["a" /* TimeSeriesData */];
                 _this.tsData[j].time = i;
                 _this.tsData[j].data = _this.minuteData['Time Series (1min)'][i];
-                _this.sum = Number(_this.tsData[j].data['1. open']) + Number(_this.tsData[j].data['2. high']) + Number(_this.tsData[j].data['3. low']) + Number(_this.tsData[j].data['4. close']);
+                _this.sum = Number(_this.tsData[j].data['1. open']) +
+                    Number(_this.tsData[j].data['2. high']) +
+                    Number(_this.tsData[j].data['3. low']) +
+                    Number(_this.tsData[j].data['4. close']);
                 _this.tsData[j].mean = _this.sum / 4;
-                console.log("mean:" + _this.tsData[j].mean);
+                console.log('mean:' + _this.tsData[j].mean);
                 j++;
-                // console.log("key: " +i +" value: "+this.minuteData['Time Series (1min)'][i]);
             }
             _this.isLoading = false;
-            // console.log("clicked" +this.minuteData['Time Series (1min)']);
         });
     };
     return StockComponent;
