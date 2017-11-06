@@ -1,0 +1,23 @@
+.table tr.active td {
+    background-color: #123456 !important;
+    color: white;
+}
+
+.loadGIF {
+    -ms-wrap-margin: 30px;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.divider {
+    height: 1px;
+    width: 100%;
+    display: block;
+    /* for use on default inline elements like span */
+    margin: 9px 0;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
