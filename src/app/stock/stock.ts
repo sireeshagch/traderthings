@@ -1,4 +1,4 @@
-export class Stock{
+export class Stock {
   _id?: string;
   Symbol: string;
   Name: string;

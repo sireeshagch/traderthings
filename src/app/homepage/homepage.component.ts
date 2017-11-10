@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-
   // image URLs
   carousel1 = 'assets/img/markets.jpg';
   carousel2 = 'assets/img/stock.jpg';
@@ -16,10 +15,9 @@ export class HomepageComponent implements OnInit {
   bitcoin = 'assets/img/bitcoin-thumb.jpg';
   stock = 'assets/img/stocktrends.jpg';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   navigateToStock() {
     this.router.navigate(['stock']);
@@ -29,6 +27,9 @@ export class HomepageComponent implements OnInit {
   }
   navigateToRules() {
     this.router.navigate(['rules']);
+  }
+  navigateToStockHome() {
+    this.router.navigate(['stockhome']);
   }
   public navigateToHome() {
     this.router.navigate(['home']);

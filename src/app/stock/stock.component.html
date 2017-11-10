@@ -1,131 +1,184 @@
 <div class="text-center">
     <div class="container-fluid">
+
+        <table class="search-results-header well">
+            <tr>
+                <td>
+                    <p class="pull-left">{{pager.startIndex + 1}}-{{pager.endIndex + 1}} of {{stocks.length}} results for "{{clickedSymbol}}"</p>
+                </td>
+                <td>
+                    <a class="pull-left btn btn-link">View all Stocks</a>
+                </td>
+            </tr>
+        </table>
         <table class="table table-hover table-striped">
             <thead>
-                <tr class="text-center">
-                    <td class="col-md-1">Sl No</td>
-                    <td class="col-md-2">Symbol</td>
-                    <td class="col-md-2">Name</td>
-                    <td class="col-md-2">Market Cap</td>
-                    <td class="col-md-2">Sector</td>
-                    <td class="col-md-2">Industry</td>
-                </tr>
+                <!-- <tr class="text-center"> -->
+                <th class="col-md-1 text-center">Sl No</th>
+                <th class="pointer col-md-2 text-center">Symbol</th>
+                <th class="col-md-2 text-center">Name</th>
+                <th class="col-md-2 text-center">Market Cap</th>
+                <th class="col-md-2 text-center">Sector</th>
+                <th class="col-md-2 text-center">Industry</th>
+                <!-- </tr> -->
             </thead>
 
             <tbody>
-
                 <tr *ngFor="let stock of pagedItems; let i=index">
-                    <td class="col-md-1"> {{(i+1)+(10*(pager.currentPage-1))}}</td>
-                    <td class="col-md-2"><a (click)="fetchStockDetails(stock)" data-toggle="modal" data-target="#stockModal">{{stock.Symbol}}</a></td>
-                    <td class="col-md-2">{{stock.Name}}</td>
-                    <td class="col-md-2">{{stock.MarketCap}}</td>
-                    <td class="col-md-2">{{stock.Sector}}</td>
-                    <td class="col-md-2">{{stock.Industry}}</td>
+                    <td class="col-md-1 "> {{(i+1)+(10*(pager.currentPage-1))}}</td>
+                    <td class="col-md-2 "><a class="btn btn-link " (click)="fetchStockDetails(stock) " data-target="#stockModal ">{{stock.Symbol}}</a></td>
+                    <td class="col-md-2 ">{{stock.Name}}</td>
+                    <td class="col-md-2 ">{{stock.MarketCap}}</td>
+                    <td class="col-md-2 ">{{stock.Sector}}</td>
+                    <td class="col-md-2 ">{{stock.Industry}}</td>
                 </tr>
-
             </tbody>
 
 
             <tfoot>
-                <tr class="text-center">
-                    <td colspan="5">
-                        <ul class="pagination">
+                <tr class="text-center ">
+                    <td colspan="5 ">
+                        <ul class="pagination ">
                             <li [ngClass]=" {disabled:pager.currentPage===1 } ">
-                                <a (click)="setPage(1) ">First</a>
+                                <a class="btn btn-link " (click)="setPage(1) ">First</a>
                             </li>
                             <li [ngClass]="{disabled:pager.currentPage===1 } ">
-                                <a (click)="setPage(pager.currentPage - 1) ">Previous</a>
+                                <a class="btn btn-link " (click)="setPage(pager.currentPage - 1) ">Previous</a>
                             </li>
-                            <li *ngFor="let page of pager.pages " [ngClass]="{active:pager.currentPage==page}">
-                                <a (click)="setPage(page) ">{{page}}</a>
-                            </li>
-                            <li [ngClass]="{disabled:pager.currentPage===pager.totalPages} ">
-                                <a (click)="setPage(pager.currentPage + 1) ">Next</a>
+                            <li *ngFor="let page of pager.pages " [ngClass]="{active:pager.currentPage==page} ">
+                                <a class="btn btn-link " (click)="setPage(page) ">{{page}}</a>
                             </li>
                             <li [ngClass]="{disabled:pager.currentPage===pager.totalPages} ">
-                                <a (click)="setPage(pager.totalPages) ">Last</a>
+                                <a class="btn btn-link " (click)="setPage(pager.currentPage + 1) ">Next</a>
+                            </li>
+                            <li [ngClass]="{disabled:pager.currentPage===pager.totalPages} ">
+                                <a class="btn btn-link " (click)="setPage(pager.totalPages) ">Last</a>
                             </li>
                         </ul>
                     </td>
                 </tr>
             </tfoot>
         </table>
-        <!-- pager -->
-
     </div>
 </div>
 
 <!-- View Stock Modal-->
+<div *ngIf="displayStock" id="stockModal ">
 
-<div id="stockModal" class="modal fade" role="dialog">
+    <div class="text-center ">
+        <div class="container-fluid ">
+
+            <div class="well ">
+                <button type="button " class="close pull-right glyphicon glyphicon-refresh"></button>
+
+                <p class="pull-left">Showing chart for {{displayStock.Name}} ({{displayStock.Symbol}})</p>
+                <app-spinner></app-spinner>
+                <div id="chart"></div>
+            </div>
+
+            <table *ngIf='stockData.symbol' class="table table-hover table-striped ">
+                <thead>
+                    <tr class="text-center ">
+                        <td class="col-md-1 ">Time</td>
+                        <td class="col-md-2 ">Open</td>
+                        <td class="col-md-2 ">High</td>
+                        <td class="col-md-2 ">Low</td>
+                        <td class="col-md-2 ">Close</td>
+                        <td class="col-md-2 ">Mean</td>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let tsd of tsData; let i=index ">
+                        <td class="col-md-1 ">{{tsd.time}}</td>
+                        <td class="col-md-2 ">{{tsd.data['1. open']}}</td>
+                        <td class="col-md-2 ">{{tsd.data['2. high']}}</td>
+                        <td class="col-md-2 ">{{tsd.data['3. low']}}</td>
+                        <td class="col-md-2 ">{{tsd.data['4. close']}}</td>
+                        <td class="col-md-2 ">{{tsd.mean}}</td>
+                    </tr>
+
+
+                </tbody>
+
+                <tfoot>
+
+                </tfoot>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<!--
+
+<div id="stockModal " class="modal fade " role="dialog ">
     <div class="modal-dialog ">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Stock Details</h4>
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <button type="button " class="close " data-dismiss="modal ">&times;</button>
+                <h4 class="modal-title ">Stock Details</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body ">
 
-                <img class="loadGIF" src="{{loadGIF}}" *ngIf="isLoading">
+                <img class="loadGIF " src="{{loadGIF}} " *ngIf="isLoading ">
 
-                <div *ngIf="!isLoading && stockData">
+                <div *ngIf="!isLoading && stockData ">
 
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <span class="label label-primary">Symbol: {{stockData.symbol}}</span>
+                    <div class="container-fluid ">
+                        <div class="row ">
+                            <div class="col-md-3 ">
+                                <span class="label label-primary ">Symbol: {{stockData.symbol}}</span>
                             </div>
-                            <div class="col-md-3">
-                                <span class="label label-primary">Interval: {{stockData.interval}} </span>
+                            <div class="col-md-3 ">
+                                <span class="label label-primary ">Interval: {{stockData.interval}} </span>
                             </div>
-                            <div class="col-md-3">
-                                <span class="label label-primary">Last Refreshed: {{stockData.lastRefreshed}} {{stockData.timezone}}</span>
+                            <div class="col-md-3 ">
+                                <span class="label label-primary ">Last Refreshed: {{stockData.lastRefreshed}} {{stockData.timezone}}</span>
                             </div>
                         </div>
                     </div>
-                    <hr class="divider" />
-                    <!-- Timeseries data-->
-                    <div class="text-center">
-                        <div class="container-fluid">
-                            <table class="table table-hover table-striped">
+                    <hr class="divider " />
+                    <div class="text-center ">
+                        <div class="container-fluid ">
+                            <table class="table table-hover table-striped ">
                                 <thead>
-                                    <tr class="text-center">
-                                        <td class="col-md-1">Time</td>
-                                        <td class="col-md-2">Open</td>
-                                        <td class="col-md-2">High</td>
-                                        <td class="col-md-2">Low</td>
-                                        <td class="col-md-2">Close</td>
-                                        <td class="col-md-2">Mean</td>
+                                    <tr class="text-center ">
+                                        <td class="col-md-1 ">Time</td>
+                                        <td class="col-md-2 ">Open</td>
+                                        <td class="col-md-2 ">High</td>
+                                        <td class="col-md-2 ">Low</td>
+                                        <td class="col-md-2 ">Close</td>
+                                        <td class="col-md-2 ">Mean</td>
 
                                     </tr>
                                 </thead>
 
                                 <tbody>
-
-                                    <tr *ngFor="let tsd of tsData; let i=index">
-                                        <td class="col-md-1">{{tsd.time}}</td>
-                                        <td class="col-md-2">{{tsd.data['1. open']}}</td>
-                                        <td class="col-md-2">{{tsd.data['2. high']}}</td>
-                                        <td class="col-md-2">{{tsd.data['3. low']}}</td>
-                                        <td class="col-md-2">{{tsd.data['4. close']}}</td>
-                                        <td class="col-md-2">{{tsd.mean}}</td>
+                                    <tr *ngFor="let tsd of tsData; let i=index ">
+                                        <td class="col-md-1 ">{{tsd.time}}</td>
+                                        <td class="col-md-2 ">{{tsd.data['1. open']}}</td>
+                                        <td class="col-md-2 ">{{tsd.data['2. high']}}</td>
+                                        <td class="col-md-2 ">{{tsd.data['3. low']}}</td>
+                                        <td class="col-md-2 ">{{tsd.data['4. close']}}</td>
+                                        <td class="col-md-2 ">{{tsd.mean}}</td>
                                     </tr>
 
-                                </tbody>
 
+                                </tbody>
 
                                 <tfoot>
 
                                 </tfoot>
+
                             </table>
-                            <!-- pager -->
+                            <div id="chart ">
+                            </div>
 
                         </div>
                     </div>
 
-                    <!--end-->
                 </div>
 
 
@@ -133,12 +186,12 @@
 
 
             </div>
-            <div class=" modal-footer">
-                <div class="text-center">
+            <div class=" modal-footer ">
+                <div class="text-center ">
 
                 </div>
             </div>
         </div>
 
     </div>
-</div>
+</div> -->

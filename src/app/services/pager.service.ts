@@ -4,12 +4,9 @@ import { Injectable } from '@angular/core';
 export class PagerService {
 
 
-    getPager(totalItems: number, currentPage: number, pageSize: number = 10) {
-      let testString: string="nothing";
+    getPager(totalItems: number, currentPage: number, pageSize: number) {
       // calculate total pages
-        testString = "entered function";
-        let totalPages = Math.ceil(totalItems / pageSize);
-        testString = "executing...";
+        const totalPages = Math.ceil(totalItems / pageSize);
         let startPage: number, endPage: number;
         if (totalPages <= 10) {
             // less than 10 total pages so show all
@@ -30,13 +27,11 @@ export class PagerService {
         }
 
         // calculate start and end item indexes
-        let startIndex = (currentPage - 1) * pageSize;
-        let endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
-        testString = "before underscore---working";
+        const startIndex = (currentPage - 1) * pageSize;
+        const endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
         // create an array of pages to ng-repeat in the pager control
-       let pages = _.range(startPage, endPage + 1);
-        //let pages = Array.from(Array(endPage - startPage), (_, i) => startPage + i)
-        testString = "after underscore---working";
+       const pages = _.range(startPage, endPage + 1);
+        // let pages = Array.from(Array(endPage - startPage), (_, i) => startPage + i)
 
         // return object with all pager properties required by the view
         return {
@@ -49,7 +44,6 @@ export class PagerService {
             startIndex: startIndex,
             endIndex: endIndex,
             pages: pages,
-            testString: testString
         };
     }
 }
