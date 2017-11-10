@@ -2,23 +2,28 @@ import { Component, Input } from '@angular/core';
 import {Image} from './image.interface';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { StockComponent } from './stock/stock.component';
+import { StockService } from './stock/stock.service';
+import { PagerService } from './services/pager.service';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [StockComponent, StockService, PagerService]
 })
 
 export class AppComponent {
-
-  title = 'app';
+  searchString: string;
   isLoggedIn: Boolean= false;
   user: string;
   pswd: string;
   // User image URL
   userimg = '../assets/img/user.png';
 
-  constructor(public authService: AuthService, private router: Router){
+
+  constructor(public authService: AuthService, private router: Router, public stockComponent: StockComponent) {
     this.authService.afAuth.authState.subscribe((auth) => {
       if (auth == null) {
         this.isLoggedIn = false;
@@ -44,6 +49,10 @@ export class AppComponent {
   navigateToHome() {
     this.router.navigate(['home']);
   }
+  navigateToChart() {
+    this.router.navigate(['chart']);
+  }
+
 
   login() {
     this.authService.loginWithGoogle().then((data) => {
@@ -59,6 +68,11 @@ export class AppComponent {
 
   onSubmit() {
     console.log(this.user + ' ' + this.pswd);
+  }
+
+  searchStocks() {
+    this.router.navigate(['stock', {searchData: this.searchString, fromSearch: true}]);
+    this.searchString = '';
   }
 }
 

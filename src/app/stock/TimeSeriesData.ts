@@ -1,5 +1,5 @@
-export class TimeSeriesData{
-  time: string="";
+export class TimeSeriesData {
+  time = '';
   data: JSON;
-  mean:number;
+  mean: number;
 }

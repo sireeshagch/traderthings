@@ -21,3 +21,12 @@
     overflow: hidden;
     background-color: #e5e5e5;
 }
+
+.search-results-header {
+    width: 400px;
+    height: 40px;
+}
+
+.pointer {
+    cursor: pointer;
+}
