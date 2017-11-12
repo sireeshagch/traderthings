@@ -12,17 +12,17 @@ export class StockHomeService {
   constructor(private http: Http) { }
 
   getNasdaq() {
-   return this.http.get('http://cheesepy.com/stockprice/TIME_SERIES_INTRADAY/1min/%5EIXIC')
+   return this.http.get('https://cheesepy.com/stockprice/TIME_SERIES_INTRADAY/1min/%5EIXIC')
     .map(res => res.json());
   }
 
   getSnP() {
-    return this.http.get('http://cheesepy.com/stockprice/TIME_SERIES_MONTHLY/1/%5EGSPC')
+    return this.http.get('https://cheesepy.com/stockprice/TIME_SERIES_MONTHLY/1/%5EGSPC')
      .map(res => res.json());
    }
 
    getDow() {
-    return this.http.get('http://cheesepy.com/stockprice/TIME_SERIES_MONTHLY/1/%5EDJI')
+    return this.http.get('https://cheesepy.com/stockprice/TIME_SERIES_MONTHLY/1/%5EDJI')
      .map(res => res.json());
    }
 
