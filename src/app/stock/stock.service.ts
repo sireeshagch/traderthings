@@ -13,18 +13,18 @@ export class StockService {
 
   // retrieving StoclService
   getStocks() {
-   return this.http.get('http://www.cheesepy.com/stocks/?limit=500')
+   return this.http.get('https://www.cheesepy.com/stocks/?limit=500')
     .map(res => res.json());
   }
 
   getMinuteData(clickedSymbol: string) {
-    const url = 'http://cheesepy.com/stockprice/TIME_SERIES_INTRADAY/1min/' + clickedSymbol;
+    const url = 'https://cheesepy.com/stockprice/TIME_SERIES_INTRADAY/1min/' + clickedSymbol;
     return this.http.get(url)
     .map(res => res.json());
   }
 
   getStocksBySymbol(symbol: string) {
-    return this.http.get('http://www.cheesepy.com/stocks/?Symbol__regex=/^' + symbol + '/i')
+    return this.http.get('https://www.cheesepy.com/stocks/?Symbol__regex=/^' + symbol + '/i')
     .map(res => res.json());
   }
 
