@@ -127,6 +127,7 @@ export class StockComponent implements OnInit {
   fetchStockDetails(clickedStock: Stock) {
     this.displayStock = clickedStock;
     this.ng4LoadingSpinnerService.show();
+
     this.stockService.getMinuteData(clickedStock.Symbol).subscribe(minuteData => {
       this.minuteData = minuteData;
       // this.metaDataInfo = this.minuteData['Meta Data']['1. Information'] + '';
@@ -170,13 +171,20 @@ export class StockComponent implements OnInit {
               label: 'Time',
               type: 'timeseries',
               tick: {
-                  format: '%m/%d/%y %H:%M'
+                count: 50,
+                culling: {
+                  max: 10 // the number of tick texts will be adjusted to less than this value
+              },
+                  format: '%m/%d/%y %H:%M',
               }
             },
             y: {
               label: 'Data'
             }
           },
+          padding: {
+            right: 35,
+        },
           grid: {
             x: {
               show: true
@@ -190,21 +198,22 @@ export class StockComponent implements OnInit {
           }
 
         });
+
       } else {
-        console.log('not undefined');
-        console.log(this.chartDataJSON);
-        this.chart.load({
+
+        setTimeout(this.chart.load({
           keys: {
             x: 'time',
              value: ['open', 'high', 'low', 'close'],
          },
          json: this.chartDataJSON,
          unload: null
-      });
+      }), 2000);
+
       }
+      this.ng4LoadingSpinnerService.hide();
 
       this.isLoading = false;
-      this.ng4LoadingSpinnerService.hide();
     });
   }
 
