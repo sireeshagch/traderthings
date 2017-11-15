@@ -19,7 +19,6 @@ import { TestBed } from '@angular/core/testing';
   providers: [StockService, PagerService, Ng4LoadingSpinnerService]
 })
 export class StockComponent implements OnInit {
-  isInSearchMode: boolean;
   noSearchResults: boolean;
   stocks: Stock[];
   searchResults: Stock[];
@@ -69,7 +68,6 @@ export class StockComponent implements OnInit {
     // if (!this.isInSearchMode) {
     this.route.params.subscribe(params => {
       if (params['searchData']) {
-        this.isInSearchMode = params['fromSearch'];
         this.clickedSymbol = params['searchData'];
         this.stockService
           .getStocksBySymbol(this.clickedSymbol)
@@ -83,7 +81,6 @@ export class StockComponent implements OnInit {
                 } else {
                   this.stocks = stocksByName;
                   this.setPage(1);
-                  this.isInSearchMode = false;
                   this.noSearchResults = false;
                   if (this.stocks.length === 1) {
                     this.fetchStockDetails(this.stocks[0]);
@@ -94,7 +91,6 @@ export class StockComponent implements OnInit {
             } else {
             this.stocks = stocksBySymbol;
             this.setPage(1);
-            this.isInSearchMode = false;
             this.noSearchResults = false;
             if (this.stocks.length === 1) {
               this.fetchStockDetails(this.stocks[0]);

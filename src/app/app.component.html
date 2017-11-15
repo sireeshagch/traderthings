@@ -22,9 +22,9 @@
                     </ul>
 
 
-                    <form class="navbar-form navbar-right" (ngSubmit)="searchStocks()" role="search">
+                    <form class="navbar-form navbar-right" (ngSubmit)="searchStock()" role="search">
                         <div class="form-group">
-                            <input type="text" placeholder="Search for symbols or companies" [(ngModel)]="searchString" name="searchString" class="form-control mySearchBox">
+                            <input type="text" placeholder="Search for symbols or companies Eg: AAPL, Microsoft etc" [(ngModel)]="searchString" name="searchString" class="form-control mySearchBox">
                         </div>
                         <button type="submit" class="btn btn-default">Search </button>
                         <button data-toggle="modal" data-target="#loginModal" class="btn btn-default" *ngIf="!isLoggedIn">Login </button>
