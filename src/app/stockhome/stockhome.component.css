@@ -1,8 +1,18 @@
 .mychart {
-    width: 75%;
+    width: 100%;
 }
 
 .mediaImage {
-    width: 64px;
-    height: 64px;
+    width: 110px;
+    height: 80px;
+}
+
+.chartHeading {
+    margin: 10px 220px 10px 0;
+}
+
+.chartCloseValue {
+    margin: 10px 0px 30px 20px;
+    width: 180px;
+    float: right;
 }

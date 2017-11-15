@@ -28,6 +28,10 @@ export class StockService {
     .map(res => res.json());
   }
 
+  getStocksByName(name: string) {
+    return this.http.get('https://cheesepy.com/stocks/?Name__regex=/^' + name + '/')
+    .map(res => res.json());
+  }
 }
 
 

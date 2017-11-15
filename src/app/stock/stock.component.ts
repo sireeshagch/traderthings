@@ -9,6 +9,7 @@ import { StockData } from './StockData';
 import { TimeSeriesData } from './TimeSeriesData';
 import * as c3 from 'c3';
 import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-spinner';
+import { TestBed } from '@angular/core/testing';
 
 
 @Component({
@@ -19,6 +20,7 @@ import { Ng4LoadingSpinnerModule, Ng4LoadingSpinnerService  } from 'ng4-loading-
 })
 export class StockComponent implements OnInit {
   isInSearchMode: boolean;
+  noSearchResults: boolean;
   stocks: Stock[];
   searchResults: Stock[];
   clickedSymbol: string; displayStock: Stock;
@@ -35,15 +37,11 @@ export class StockComponent implements OnInit {
   isLoading = true;
   loadGIF = 'assets/img/loading.gif';
   tsData: TimeSeriesData[] = new Array<TimeSeriesData>();
-  openArray = [];
-  timeArray = [];
-  array = [];
-  closeArray = [];
-  highArray = [];
-  lowArray = [];
-  meanArray = [];
-  chartDataJSON: string;
-  sum: number;
+
+  cdata: {time: string, open: number, high: number, low: number, close: number};
+  chartDataJSON = [];
+  chartData = {close: [], open: [], high: [], low: [], time: []};
+  chart: c3.ChartAPI;
 
   constructor(
     private stockService: StockService,
@@ -72,25 +70,51 @@ export class StockComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params['searchData']) {
         this.isInSearchMode = params['fromSearch'];
-        console.log('search mode' + this.isInSearchMode);
         this.clickedSymbol = params['searchData'];
         this.stockService
           .getStocksBySymbol(this.clickedSymbol)
-          .subscribe(stocks => {
-            this.stocks = stocks;
+          .subscribe(stocksBySymbol => {
+            if (stocksBySymbol.length === 0) {
+              this.noSearchResults = true;
+              this.stockService
+              .getStocksByName(this.clickedSymbol.charAt(0).toUpperCase() + this.clickedSymbol.slice(1))
+              .subscribe(stocksByName => {
+                if (stocksByName.length === 0) {
+                  this.noSearchResults = true;
+                } else {
+                  this.stocks = stocksByName;
+                  this.setPage(1);
+                  this.isInSearchMode = false;
+                  this.noSearchResults = false;
+                  if (this.stocks.length === 1) {
+                    this.fetchStockDetails(this.stocks[0]);
+                  }
+                }
+
+              });
+            } else {
+            this.stocks = stocksBySymbol;
             this.setPage(1);
             this.isInSearchMode = false;
+            this.noSearchResults = false;
+            if (this.stocks.length === 1) {
+              this.fetchStockDetails(this.stocks[0]);
+            }
+           }
           });
       } else {
-        console.log('ngoninit');
-        this.stockService.getStocks().subscribe(stocks => {
-          this.stocks = stocks;
-          this.setPage(1);
-        });
+        this.getAllStocks();
       }
     });
   }
 
+  getAllStocks() {
+    this.displayStock = null;
+    this.stockService.getStocks().subscribe(stocks => {
+      this.stocks = stocks;
+      this.setPage(1);
+    });
+  }
   populateStockData(
     info: string,
     clickedSymbol: string,
@@ -119,71 +143,74 @@ export class StockComponent implements OnInit {
       //   this.metaDataTimezone);
 
       let j = 0;
-
+      this.chartDataJSON = [];
       // tslint:disable-next-line:forin
       for (const i in this.minuteData['Time Series (1min)']) {
         this.tsData[j] = new TimeSeriesData();
         this.tsData[j].time = i;
         this.tsData[j].data = this.minuteData['Time Series (1min)'][i];
-        this.sum =
-          Number(this.tsData[j].data['1. open']) +
-          Number(this.tsData[j].data['2. high']) +
-          Number(this.tsData[j].data['3. low']) +
-          Number(this.tsData[j].data['4. close']);
-        this.tsData[j].mean = this.sum / 4;
-        console.log('sireesha ' + this.tsData[j].time.split(' ')[1]);
-        // forming chart data
-        this.timeArray.push(this.tsData[j].time.split(' ')[1]);
-        this.openArray.push(this.tsData[j].data['1. open']);
-        this.highArray.push(this.tsData[j].data['2. high']);
-        this.lowArray.push(this.tsData[j].data['3. low']);
-        this.closeArray.push(this.tsData[j].data['4. close']);
-        this.meanArray.push(this.tsData[j].mean + '');
+
+        this.cdata = {time: this.tsData[j].time, open: this.tsData[j].data['1. open'],
+                      high: this.tsData[j].data['2. high'], low: this.tsData[j].data['3. low'],
+                      close: this.tsData[j].data['4. close']};
+        this.chartDataJSON.unshift(this.cdata);
         j++;
       }
 
-      const chartData = {
-        close: this.closeArray,
-        open: this.openArray,
-        high: this.highArray,
-        low: this.lowArray,
-        mean: this.meanArray,
-        time: this.timeArray
-      };
-      const chart = c3.generate({
-        bindto: '#chart',
-        data: {
-          columns: [
-            ['time'].concat(chartData.time),
-            ['open'].concat(chartData.open),
-            ['close'].concat(chartData.close),
-            ['high'].concat(chartData.high),
-            ['low'].concat(chartData.low),
-            ['mean'].concat(chartData.mean)
-          ]
-        },
-        axis: {
-          x: {
-            label: 'Time'
+      if (this.chart === undefined) {
+        this.chart = c3.generate({
+          bindto: '#chart',
+          data: {
+            x: 'time',
+            xFormat: '%Y-%m-%d %H:%M:%S',
+            keys: {
+               x: 'time',
+                value: ['open', 'high', 'low', 'close'],
+            },
+            json: this.chartDataJSON
+
           },
-          y: {
-            label: 'Data'
-          }
-        },
-        grid: {
-          x: {
-            show: true
+          axis: {
+            x: {
+              label: 'Time',
+              type: 'timeseries',
+              tick: {
+                  format: '%m/%d/%y %H:%M'
+              }
+            },
+            y: {
+              label: 'Data'
+            }
           },
-          y: {
-            show: true
+          grid: {
+            x: {
+              show: true
+            },
+            y: {
+              show: true
+            }
+          },
+          zoom: {
+            enabled: true
           }
-        },
-        zoom: {
-          enabled: true
-        }
+
+        });
+      } else {
+        console.log('not undefined');
+        console.log(this.chartDataJSON);
+        this.chart.load({
+          keys: {
+            x: 'time',
+             value: ['open', 'high', 'low', 'close'],
+         },
+         json: this.chartDataJSON,
+         unload: null
       });
+      }
+
       this.isLoading = false;
-      // this.ng4LoadingSpinnerService.hide();
+      this.ng4LoadingSpinnerService.hide();
     });
   }
+
 }

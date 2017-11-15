@@ -16,16 +16,22 @@ import { PagerService } from '../services/pager.service';
 export class StockhomeComponent implements OnInit {
 
   nasdaqMinuteData: MinuteData;
-  snpminuteData: MinuteData;
-  dowMinuteData: MinuteData;
+  snpMonthlyData: MinuteData;
+  dowMonthlyData: MinuteData;
   nasdaqTSArray: TimeSeriesData[] = new Array<TimeSeriesData>();
   snpTSArray: TimeSeriesData[] = new Array<TimeSeriesData>();
   dowTSArray: TimeSeriesData[] = new Array<TimeSeriesData>();
+  latestClose = [];
+  prevClose = [];
+  chartData = {close: [], open: [], high: [], low: [], time: []};
 
   pager: any = {}; // pager object
   pagedItems = []; // paged items
   news: News[];
   articles = [];
+  schart: c3.ChartAPI;
+  dchart: c3.ChartAPI;
+  nchart: c3.ChartAPI;
 
   constructor(private stockhomeService: StockHomeService, private pagerService: PagerService) { }
 
@@ -45,234 +51,79 @@ export class StockhomeComponent implements OnInit {
 
   ngOnInit() {
     this.stockhomeService.getSnP().subscribe(snp => {
-      this.snpminuteData = snp;
+      this.snpMonthlyData = snp;
 
       let j = 0;
-      const openArray = [];
-      const timeArray = [];
-      const array = [];
-      const closeArray = [];
-      const highArray = [];
-      const lowArray = [];
-      const meanArray = [];
-      const chartDataJSON = '';
-
+      let cdata: {time: string, open: number, high: number, low: number, close: number};
+      const chartDataJSON = [];
             // tslint:disable-next-line:forin
-            for (const i in this.snpminuteData['Monthly Time Series']) {
+            for (const i in this.snpMonthlyData['Monthly Time Series']) {
               this.snpTSArray[j] = new TimeSeriesData();
               this.snpTSArray[j].time = i;
-              this.snpTSArray[j].data = this.snpminuteData['Monthly Time Series'][i];
-              const sum =
-                Number(this.snpTSArray[j].data['1. open']) +
-                Number(this.snpTSArray[j].data['2. high']) +
-                Number(this.snpTSArray[j].data['3. low']) +
-                Number(this.snpTSArray[j].data['4. close']);
-              this.snpTSArray[j].mean = sum / 4;
-              // forming chart data
-              timeArray.push(this.snpTSArray[j].time);
-              openArray.push(this.snpTSArray[j].data['1. open']);
-              highArray.push(this.snpTSArray[j].data['2. high']);
-              lowArray.push(this.snpTSArray[j].data['3. low']);
-              closeArray.push(this.snpTSArray[j].data['4. close']);
-              meanArray.push(this.snpTSArray[j].mean + '');
+              this.snpTSArray[j].data = this.snpMonthlyData['Monthly Time Series'][i];
+
+              cdata = {time: this.snpTSArray[j].time, open: this.snpTSArray[j].data['1. open'],
+              high: this.snpTSArray[j].data['2. high'], low: this.snpTSArray[j].data['3. low'],
+              close: this.snpTSArray[j].data['4. close']};
+              chartDataJSON.unshift(cdata);
               j++;
             }
+            this.latestClose[0] = this.snpTSArray[0].data['4. close'];
+            this.prevClose[0] = this.snpTSArray[1].data['4. close'];
 
-            const chartData = {
-              close: closeArray,
-              open: openArray,
-              high: highArray,
-              low: lowArray,
-              mean: meanArray,
-              time: timeArray
-            };
+            setTimeout(this.drawMonthChart('#chart1', chartDataJSON, this.schart),1000);
 
-            const chart = c3.generate({
-              bindto: '#chart1',
-              data: {
-                columns: [
-                  ['time'].concat(chartData.time),
-                  ['open'].concat(chartData.open),
-                  ['close'].concat(chartData.close),
-                  ['high'].concat(chartData.high),
-                  ['low'].concat(chartData.low),
-                  ['mean'].concat(chartData.mean)
-                ]
-              },
-              axis: {
-                x: {
-                  label: 'Time'
-                },
-                y: {
-                  label: 'Data'
-                }
-              },
-              grid: {
-                x: {
-                  show: true
-                },
-                y: {
-                  show: true
-                }
-              },
-              zoom: {
-                enabled: true
-              }
-            });
+
     });
     this.stockhomeService.getDow().subscribe(dow => {
-      this.dowMinuteData = dow;
+      this.dowMonthlyData = dow;
 
       let j = 0;
-      const openArray = [];
-      const timeArray = [];
-      const array = [];
-      const closeArray = [];
-      const highArray = [];
-      const lowArray = [];
-      const meanArray = [];
-      const chartDataJSON = '';
-
+      let cdata: {time: string, open: number, high: number, low: number, close: number};
+      const chartDataJSON = [];
             // tslint:disable-next-line:forin
-            for (const i in this.dowMinuteData['Monthly Time Series']) {
+            for (const i in this.dowMonthlyData['Monthly Time Series']) {
               this.dowTSArray[j] = new TimeSeriesData();
               this.dowTSArray[j].time = i;
-              this.dowTSArray[j].data = this.dowMinuteData['Monthly Time Series'][i];
-              const sum =
-                Number(this.dowTSArray[j].data['1. open']) +
-                Number(this.dowTSArray[j].data['2. high']) +
-                Number(this.dowTSArray[j].data['3. low']) +
-                Number(this.dowTSArray[j].data['4. close']);
-              this.dowTSArray[j].mean = sum / 4;
-              console.log('sireesha' + this.dowTSArray[j].time);
-              // forming chart data
-              timeArray.push(this.dowTSArray[j].time);
-              openArray.push(this.dowTSArray[j].data['1. open']);
-              highArray.push(this.dowTSArray[j].data['2. high']);
-              lowArray.push(this.dowTSArray[j].data['3. low']);
-              closeArray.push(this.dowTSArray[j].data['4. close']);
-              meanArray.push(this.dowTSArray[j].mean + '');
+              this.dowTSArray[j].data = this.dowMonthlyData['Monthly Time Series'][i];
+
+              cdata = {time: this.dowTSArray[j].time, open: this.dowTSArray[j].data['1. open'],
+              high: this.dowTSArray[j].data['2. high'], low: this.dowTSArray[j].data['3. low'],
+              close: this.dowTSArray[j].data['4. close']};
+              chartDataJSON.unshift(cdata);
               j++;
             }
+            this.latestClose[1] = this.dowTSArray[0].data['4. close'];
+            this.prevClose[1] = this.dowTSArray[1].data['4. close'];
 
-            const chartData = {
-              close: closeArray,
-              open: openArray,
-              high: highArray,
-              low: lowArray,
-              mean: meanArray,
-              time: timeArray
-            };
-
-            const chart = c3.generate({
-              bindto: '#chart2',
-              data: {
-                columns: [
-                  ['time'].concat(chartData.time),
-                  ['open'].concat(chartData.open),
-                  ['close'].concat(chartData.close),
-                  ['high'].concat(chartData.high),
-                  ['low'].concat(chartData.low),
-                  ['mean'].concat(chartData.mean)
-                ]
-              },
-              axis: {
-                x: {
-                  label: 'Time'
-                },
-                y: {
-                  label: 'Data'
-                }
-              },
-              grid: {
-                x: {
-                  show: true
-                },
-                y: {
-                  show: true
-                }
-              },
-              zoom: {
-                enabled: true
-              }
-            });
+            this.drawMonthChart('#chart2', chartDataJSON, this.dchart);
     });
+
 
     this.stockhomeService.getNasdaq().subscribe(nasdaq => {
       this.nasdaqMinuteData = nasdaq;
 
       let j = 0;
-      const openArray = [];
-      const timeArray = [];
-      const array = [];
-      const closeArray = [];
-      const highArray = [];
-      const lowArray = [];
-      const meanArray = [];
-      const chartDataJSON = '';
+      let cdata: {time: string, open: number, high: number, low: number, close: number};
+      const chartDataJSON = [];
             // tslint:disable-next-line:forin
             for (const i in this.nasdaqMinuteData['Time Series (1min)']) {
               this.nasdaqTSArray[j] = new TimeSeriesData();
               this.nasdaqTSArray[j].time = i;
               this.nasdaqTSArray[j].data = this.nasdaqMinuteData['Time Series (1min)'][i];
-              const sum =
-                Number(this.nasdaqTSArray[j].data['1. open']) +
-                Number(this.nasdaqTSArray[j].data['2. high']) +
-                Number(this.nasdaqTSArray[j].data['3. low']) +
-                Number(this.nasdaqTSArray[j].data['4. close']);
-              this.nasdaqTSArray[j].mean = sum / 4;
 
-              // forming chart data
-              timeArray.push(this.nasdaqTSArray[j].time.split(' ')[1]);
-              openArray.push(this.nasdaqTSArray[j].data['1. open']);
-              highArray.push(this.nasdaqTSArray[j].data['2. high']);
-              lowArray.push(this.nasdaqTSArray[j].data['3. low']);
-              closeArray.push(this.nasdaqTSArray[j].data['4. close']);
-              meanArray.push(this.nasdaqTSArray[j].mean + '');
+              cdata = {time: this.nasdaqTSArray[j].time, open: this.nasdaqTSArray[j].data['1. open'],
+              high: this.nasdaqTSArray[j].data['2. high'], low: this.nasdaqTSArray[j].data['3. low'],
+              close: this.nasdaqTSArray[j].data['4. close']};
+              chartDataJSON.unshift(cdata);
               j++;
             }
+            this.latestClose[2] = this.nasdaqTSArray[0].data['4. close'];
+            this.prevClose[2] = this.nasdaqTSArray[1].data['4. close'];
 
-            const chartData = {
-              close: closeArray,
-              open: openArray,
-              high: highArray,
-              low: lowArray,
-              mean: meanArray,
-              time: timeArray
-            };
+            this.drawTimeChart('#chart3', chartDataJSON, this.nchart);
 
-            const chart = c3.generate({
-              bindto: '#chart3',
-              data: {
-                columns: [
-                  ['time'].concat(chartData.time),
-                  ['open'].concat(chartData.open),
-                  ['close'].concat(chartData.close),
-                  ['high'].concat(chartData.high),
-                  ['low'].concat(chartData.low),
-                  ['mean'].concat(chartData.mean)
-                ]
-              },
-              axis: {
-                x: {
-                  label: 'Time'
-                },
-                y: {
-                  label: 'Data'
-                }
-              },
-              grid: {
-                x: {
-                  show: true
-                },
-                y: {
-                  show: true
-                }
-              },
-              zoom: {
-                enabled: true
-              }
-            });
+
     this.getNews();
 
     });
@@ -306,8 +157,103 @@ export class StockhomeComponent implements OnInit {
     });
   }
 
-  drawChart(data: any[]) {
+  drawMonthChart(id: string, chartDataJSON: any[], chart: c3.ChartAPI) {
+    if (chart === undefined) {
+      chart = c3.generate({
+       bindto: id,
+       data: {
+         x: 'time',
+         xFormat: '%Y-%m-%d',
+         keys: {
+            x: 'time',
+             value: ['open', 'high', 'low', 'close'],
+         },
+         json: chartDataJSON
 
+       },
+       axis: {
+         x: {
+           label: 'Time',
+           type: 'timeseries',
+           tick: {
+               format: '%m/%d/%y'
+           }
+         },
+         y: {
+           label: 'Data'
+         }
+       },
+       grid: {
+         x: {
+           show: true
+         },
+         y: {
+           show: true
+         }
+       },
+       zoom: {
+         enabled: true
+       }
+     });
+   } else {
+     chart.load({
+       keys: {
+         x: 'time',
+          value: ['open', 'high', 'low', 'close'],
+      },
+      json: chartDataJSON,
+      unload: null
+   });
+       }
+  }
+  drawTimeChart(id: string, chartDataJSON: any[], chart: c3.ChartAPI) {
+    if (chart === undefined) {
+      chart = c3.generate({
+       bindto: id,
+       data: {
+         x: 'time',
+         xFormat: '%Y-%m-%d %H:%M:%S',
+         keys: {
+            x: 'time',
+             value: ['open', 'high', 'low', 'close'],
+         },
+         json: chartDataJSON
+
+       },
+       axis: {
+         x: {
+           label: 'Time',
+           type: 'timeseries',
+           tick: {
+               format: '%m/%d/%y %H:%M'
+           }
+         },
+         y: {
+           label: 'Data'
+         }
+       },
+       grid: {
+         x: {
+           show: true
+         },
+         y: {
+           show: true
+         }
+       },
+       zoom: {
+         enabled: true
+       }
+     });
+   } else {
+     chart.load({
+       keys: {
+         x: 'time',
+          value: ['open', 'high', 'low', 'close'],
+      },
+      json: chartDataJSON,
+      unload: null
+   });
+       }
   }
 
 }
