@@ -6,7 +6,12 @@
                     <table class="table table-hover table-bordered table-striped">
                         <tbody>
                             <tr class="text-center">
-                                <td class="col-md-2">S&P 500</td>
+                                <td class="col-md-2">
+                                    <div>
+                                        S&P 500
+                                        <!-- <h4 class="chartCloseValue">{{latestClose[0]}}</h4> -->
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <td class="col-md-2">
@@ -15,7 +20,9 @@
                                 </td>
                             </tr>
                             <tr class="text-center">
-                                <td class="col-md-2">Dow 30</td>
+                                <td class="col-md-2">Dow 30
+                                    <!-- <p>{{latestClose[1]}}</p> -->
+                                </td>
                             </tr>
                             <tr>
                                 <td class="col-md-2">
@@ -24,7 +31,9 @@
                                 </td>
                             </tr>
                             <tr class="text-center">
-                                <td class="col-md-2">Nasdaq</td>
+                                <td class="col-md-2">Nasdaq
+                                    <!-- <p>{{latestClose[2]}}</p> -->
+                                </td>
                             </tr>
 
                             <tr>
@@ -43,7 +52,7 @@
                             <tr class="text-center">
                                 <td>
                                     <h4>Top trending News</h4>
-                                    Sort by: <a class="btn btn-link disabled" data-toggle="button" (click)="getNews()">Latest</a> | <a class="btn btn-link" data-toggle="button" (click)="getPopularNews()">Popular</a> | <a class="btn btn-link" data-toggle="button"
+                                    Sort by: <a class="btn btn-link" data-toggle="button" (click)="getNews()">Latest</a> | <a class="btn btn-link" data-toggle="button" (click)="getPopularNews()">Popular</a> | <a class="btn btn-link" data-toggle="button"
                                         (click)="getTopNews()">Top</a>
                                 </td>
                                 <td>
