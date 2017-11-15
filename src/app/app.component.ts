@@ -49,10 +49,6 @@ export class AppComponent {
   navigateToHome() {
     this.router.navigate(['home']);
   }
-  navigateToChart() {
-    this.router.navigate(['chart']);
-  }
-
 
   login() {
     this.authService.loginWithGoogle().then((data) => {
@@ -67,12 +63,14 @@ export class AppComponent {
   }
 
   onSubmit() {
+
     console.log(this.user + ' ' + this.pswd);
   }
 
-  searchStocks() {
-    this.router.navigate(['stock', {searchData: this.searchString, fromSearch: true}]);
+  searchStock() {
+    this.router.navigate(['stock', {searchData: this.searchString}]);
     this.searchString = '';
   }
+
 }
 
