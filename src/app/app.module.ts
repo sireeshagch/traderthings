@@ -17,7 +17,6 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { StockComponent } from './stock/stock.component';
 import { CryptoComponent } from './crypto/crypto.component';
 import { RulesComponent } from './rules/rules.component';
-import { ChartComponent } from './chart/chart.component';
 import { StockhomeComponent } from './stockhome/stockhome.component';
 
 export const firebaseConfig = {
@@ -36,7 +35,6 @@ export const firebaseConfig = {
     StockComponent,
     CryptoComponent,
     RulesComponent,
-    ChartComponent,
     StockhomeComponent
   ],
   imports: [
