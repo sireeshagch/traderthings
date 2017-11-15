@@ -57,10 +57,10 @@ export class StockhomeComponent implements OnInit {
       let cdata: {time: string, open: number, high: number, low: number, close: number};
       const chartDataJSON = [];
             // tslint:disable-next-line:forin
-            for (const i in this.snpMonthlyData['Monthly Time Series']) {
+            for (const i in this.snpMonthlyData['Time Series (Daily)']) {
               this.snpTSArray[j] = new TimeSeriesData();
               this.snpTSArray[j].time = i;
-              this.snpTSArray[j].data = this.snpMonthlyData['Monthly Time Series'][i];
+              this.snpTSArray[j].data = this.snpMonthlyData['Time Series (Daily)'][i];
 
               cdata = {time: this.snpTSArray[j].time, open: this.snpTSArray[j].data['1. open'],
               high: this.snpTSArray[j].data['2. high'], low: this.snpTSArray[j].data['3. low'],
@@ -68,10 +68,10 @@ export class StockhomeComponent implements OnInit {
               chartDataJSON.unshift(cdata);
               j++;
             }
-            this.latestClose[0] = this.snpTSArray[0].data['4. close'];
-            this.prevClose[0] = this.snpTSArray[1].data['4. close'];
+            // this.latestClose[0] = this.snpTSArray[0].data['4. close'];
+            // this.prevClose[0] = this.snpTSArray[1].data['4. close'];
 
-            setTimeout(this.drawMonthChart('#chart1', chartDataJSON, this.schart),1000);
+            setTimeout(this.drawTimeChart('#chart1', chartDataJSON, this.schart), 1000);
 
 
     });
@@ -82,21 +82,23 @@ export class StockhomeComponent implements OnInit {
       let cdata: {time: string, open: number, high: number, low: number, close: number};
       const chartDataJSON = [];
             // tslint:disable-next-line:forin
-            for (const i in this.dowMonthlyData['Monthly Time Series']) {
+            for (const i in this.dowMonthlyData['Time Series (Daily)']) {
               this.dowTSArray[j] = new TimeSeriesData();
               this.dowTSArray[j].time = i;
-              this.dowTSArray[j].data = this.dowMonthlyData['Monthly Time Series'][i];
+              this.dowTSArray[j].data = this.dowMonthlyData['Time Series (Daily)'][i];
 
               cdata = {time: this.dowTSArray[j].time, open: this.dowTSArray[j].data['1. open'],
               high: this.dowTSArray[j].data['2. high'], low: this.dowTSArray[j].data['3. low'],
               close: this.dowTSArray[j].data['4. close']};
               chartDataJSON.unshift(cdata);
+              console.log('dow dates: ' + chartDataJSON[j].time);
+
               j++;
             }
             this.latestClose[1] = this.dowTSArray[0].data['4. close'];
             this.prevClose[1] = this.dowTSArray[1].data['4. close'];
 
-            this.drawMonthChart('#chart2', chartDataJSON, this.dchart);
+            this.drawTimeChart('#chart2', chartDataJSON, this.dchart);
     });
 
 
@@ -107,10 +109,10 @@ export class StockhomeComponent implements OnInit {
       let cdata: {time: string, open: number, high: number, low: number, close: number};
       const chartDataJSON = [];
             // tslint:disable-next-line:forin
-            for (const i in this.nasdaqMinuteData['Time Series (1min)']) {
+            for (const i in this.nasdaqMinuteData['Time Series (Daily)']) {
               this.nasdaqTSArray[j] = new TimeSeriesData();
               this.nasdaqTSArray[j].time = i;
-              this.nasdaqTSArray[j].data = this.nasdaqMinuteData['Time Series (1min)'][i];
+              this.nasdaqTSArray[j].data = this.nasdaqMinuteData['Time Series (Daily)'][i];
 
               cdata = {time: this.nasdaqTSArray[j].time, open: this.nasdaqTSArray[j].data['1. open'],
               high: this.nasdaqTSArray[j].data['2. high'], low: this.nasdaqTSArray[j].data['3. low'],
@@ -118,8 +120,9 @@ export class StockhomeComponent implements OnInit {
               chartDataJSON.unshift(cdata);
               j++;
             }
-            this.latestClose[2] = this.nasdaqTSArray[0].data['4. close'];
-            this.prevClose[2] = this.nasdaqTSArray[1].data['4. close'];
+            // console.log('nasdaq chartJSON:' + chartDataJSON[0]['time']);
+            // this.latestClose[2] = this.nasdaqTSArray[0].data['4. close'];
+            // this.prevClose[2] = this.nasdaqTSArray[1].data['4. close'];
 
             this.drawTimeChart('#chart3', chartDataJSON, this.nchart);
 
@@ -157,7 +160,7 @@ export class StockhomeComponent implements OnInit {
     });
   }
 
-  drawMonthChart(id: string, chartDataJSON: any[], chart: c3.ChartAPI) {
+  drawTimeChart(id: string, chartDataJSON: any[], chart: c3.ChartAPI) {
     if (chart === undefined) {
       chart = c3.generate({
        bindto: id,
@@ -176,62 +179,16 @@ export class StockhomeComponent implements OnInit {
            label: 'Time',
            type: 'timeseries',
            tick: {
-               format: '%m/%d/%y'
+               format: '%m/%d/%y',
            }
          },
          y: {
            label: 'Data'
          }
        },
-       grid: {
-         x: {
-           show: true
-         },
-         y: {
-           show: true
-         }
-       },
-       zoom: {
-         enabled: true
-       }
-     });
-   } else {
-     chart.load({
-       keys: {
-         x: 'time',
-          value: ['open', 'high', 'low', 'close'],
-      },
-      json: chartDataJSON,
-      unload: null
-   });
-       }
-  }
-  drawTimeChart(id: string, chartDataJSON: any[], chart: c3.ChartAPI) {
-    if (chart === undefined) {
-      chart = c3.generate({
-       bindto: id,
-       data: {
-         x: 'time',
-         xFormat: '%Y-%m-%d %H:%M:%S',
-         keys: {
-            x: 'time',
-             value: ['open', 'high', 'low', 'close'],
-         },
-         json: chartDataJSON
-
-       },
-       axis: {
-         x: {
-           label: 'Time',
-           type: 'timeseries',
-           tick: {
-               format: '%m/%d/%y %H:%M'
-           }
-         },
-         y: {
-           label: 'Data'
-         }
-       },
+       padding: {
+        right: 20,
+    },
        grid: {
          x: {
            show: true
