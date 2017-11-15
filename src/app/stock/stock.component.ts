@@ -75,9 +75,8 @@ export class StockComponent implements OnInit {
           .getStocksBySymbol(this.clickedSymbol)
           .subscribe(stocksBySymbol => {
             if (stocksBySymbol.length === 0) {
-              this.noSearchResults = true;
               this.stockService
-              .getStocksByName(this.clickedSymbol.charAt(0).toUpperCase() + this.clickedSymbol.slice(1))
+              .getStocksByName(this.clickedSymbol.charAt(0).toUpperCase() + this.clickedSymbol.slice(1).toLowerCase())
               .subscribe(stocksByName => {
                 if (stocksByName.length === 0) {
                   this.noSearchResults = true;
