@@ -5,42 +5,70 @@
                 <div class="col-md-6">
                     <table class="table table-hover table-bordered table-striped">
                         <tbody>
-                            <tr class="text-center">
-                                <td class="col-md-2">Nasdaq
-                                    <!-- <p>{{latestClose[2]}}</p> -->
+                            <tr>
+                                <td class="col-md-2">
+                                    <b class='title'>
+                                        NASDAQ Composite (^IXIC)
+                                    </b>
+                                    <p>
+                                        <span class='subtitle'> Nasdaq GIDS - Nasdaq GIDS Delayed Price. Currency in USD
+                                              </span>
+                                    </p>
+                                    <p>
+                                        <b>{{latestClose[2]}} </b> <span class='difference'> {{sign[2]}}{{difference[2]}}  {{percentage[2]}}</span>
+                                    </p>
+
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class="col-md-2">
                                     <div id="chart3" class="mychart">
+                                        Loading chart...
                                     </div>
                                 </td>
                             </tr>
 
-                            <tr class="text-center">
-                                <td class="col-md-2">Dow 30
-                                    <!-- <p>{{latestClose[1]}}</p> -->
+                            <tr>
+                                <td class="col-md-2">
+                                    <b class='title'>
+                                        Dow Jones Industrial Average (^DJI)
+                                      </b>
+                                    <p>
+                                        <span class='subtitle'> DJI - DJI Real Time Price. Currency in USD
+                                              </span>
+                                    </p>
+                                    <p>
+                                        <b>{{latestClose[1]}} </b> <span class='difference'> {{sign[1]}}{{difference[1]}}  {{percentage[1]}}</span>
+                                    </p>
+
                                 </td>
                             </tr>
                             <tr>
                                 <td class="col-md-2">
                                     <div id="chart2" class="mychart">
+                                        Loading chart...
                                     </div>
                                 </td>
                             </tr>
 
-                            <tr class="text-center">
+                            <tr>
                                 <td class="col-md-2">
-                                    <div>
-                                        S&P 500
-                                        <!-- <h4 class="chartCloseValue">{{latestClose[0]}}</h4> -->
-                                    </div>
-                                </td>
+                                    <b class='title'>
+                                        S&P 500 (^GSPC)
+                                      </b>
+                                    <p>
+                                        <span class='subtitle'> SNP - SNP Real Time Price. Currency in USD
+                                              </span>
+                                    </p>
+                                    <p>
+                                        <b>{{latestClose[0]}} </b> <span class='difference'> {{sign[0]}}{{difference[0]}}  {{percentage[0]}}</span>
+                                    </p>
                             </tr>
                             <tr>
                                 <td class="col-md-2">
                                     <div id="chart1" class="mychart">
+                                        Loading chart...
                                     </div>
                                 </td>
                             </tr>
@@ -56,14 +84,11 @@
                             <tr class="text-center">
                                 <td>
                                     <h4>Top trending News</h4>
-                                    Sort by: <a class="btn btn-link" data-toggle="button" (click)="getNews()">Latest</a> | <a class="btn btn-link" data-toggle="button" (click)="getPopularNews()">Popular</a> | <a class="btn btn-link" data-toggle="button"
-                                        (click)="getTopNews()">Top</a>
+                                    Sort by: <a class="btn btn-link" data-toggle="button" (click)="getNews()">Latest</a> | <a class="btn btn-link" data-toggle="button" (click)="getTopNews()">Top</a>
                                 </td>
                                 <td>
                                     <ul class="pagination pagination-sm pull-right">
-                                        <!-- <li [ngClass]=" {disabled:pager.currentPage===1 } ">
-                                            <a (click)="setPage(1) ">First</a>
-                                        </li> -->
+
                                         <li [ngClass]="{disabled:pager.currentPage===1 } ">
                                             <a class="btn btn-link" (click)="setPage(pager.currentPage - 1) ">Previous</a>
                                         </li>
@@ -73,9 +98,7 @@
                                         <li [ngClass]="{disabled:pager.currentPage===pager.totalPages} ">
                                             <a class="btn btn-link" (click)="setPage(pager.currentPage + 1) ">Next</a>
                                         </li>
-                                        <!-- <li [ngClass]="{disabled:pager.currentPage===pager.totalPages} ">
-                                            <a (click)="setPage(pager.totalPages) ">Last</a>
-                                        </li> -->
+
                                     </ul>
                                 </td>
                             </tr>

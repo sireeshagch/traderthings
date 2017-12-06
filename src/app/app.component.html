@@ -15,28 +15,37 @@
                         <li class="active">
                             <a class="btn btn-link" type="button" (click)="navigateToHome()">Home</a>
                         </li>
-
+                        <li>
+                            <a class="btn btn-link" type="button" (click)="navigateToStockHome()">Stocks</a>
+                        </li>
                         <li>
                             <a class="btn btn-link" type="button">Contact Us</a>
                         </li>
                     </ul>
 
-
                     <form class="navbar-form navbar-right" (ngSubmit)="searchStock()" role="search">
                         <div class="form-group">
-                            <input type="text" placeholder="Search for symbols or companies Eg: AAPL, Microsoft etc" [(ngModel)]="searchString" name="searchString" class="form-control mySearchBox">
+                            <input id='searchInput' type="text" (keyup)=filter($event) autocomplete="off" placeholder="Search for symbols or companies Eg: AAPL, Microsoft etc" [(ngModel)]="searchString" name="searchString" class="form-control mySearchBox">
                         </div>
                         <button type="submit" class="btn btn-default">Search </button>
-                        <button data-toggle="modal" data-target="#loginModal" class="btn btn-default" *ngIf="!isLoggedIn">Login </button>
+
+                        <button type="button" data-toggle="modal" data-target="#loginModal" class="btn btn-default" *ngIf="!isLoggedIn">Login </button>
                         <!-- <button class="btn btn-default" *ngIf="isLoggedIn">Logout</button> -->
 
-
+                        <div id="autoSuggestDiv" class="suggestions" *ngIf="filteredList.length > 0">
+                            <ul class="list-group-item" *ngFor="let item of filteredList; let idx=index">
+                                <li (click)="selectItem(item)" [class.complete-selected]="idx == selectedIdx">
+                                    <!-- <a ng-click="select(item.Symbol)">{{item.Symbol}} - {{item.Name}}</a> -->
+                                    <a (click)="selectItem(item)">{{item.Symbol}} - {{item.Name}}</a>
+                                </li>
+                            </ul>
+                        </div>
 
                         <div class="btn btn-default" *ngIf="isLoggedIn">
                             <img class="user dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" src="{{userimg}}">
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item myAnchor" href=" # ">View Profile</a><br>
-                                <a class="dropdown-item myAnchor" (click)="logout() ">Logout</a><br>
+                                <a class="dropdown-item myAnchor" href=" #">View Profile</a><br>
+                                <a class="dropdown-item myAnchor" (click)="logout()">Logout</a><br>
                             </div>
                         </div>
                     </form>
@@ -44,9 +53,10 @@
 
                 </div>
             </nav>
+
             <!-- Modal -->
             <div id="loginModal" class="modal fade" role="dialog">
-                <div class="modal-dialog ">
+                <div class="modal-dialog">
 
                     <!-- Modal content-->
                     <div class="modal-content">
@@ -63,7 +73,7 @@
                                 </div>
 
 
-                                <div class="form-group ">
+                                <div class="form-group">
                                     <label> Password</label>
                                     <input type="password" required [(ngModel)]="pswd" placeholder="password" name="pswd" class="form-control">
                                 </div>

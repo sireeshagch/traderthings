@@ -17,14 +17,25 @@ export class StockService {
     .map(res => res.json());
   }
 
-  getMinuteData(clickedSymbol: string) {
-    const url = 'https://cheesepy.com/stockprice/TIME_SERIES_INTRADAY/1min/' + clickedSymbol;
+  getSymbolAndName() {
+    return this.http.get('https://www.cheesepy.com/stocks/?select=Symbol%20Name')
+    .map(res => res.json());
+  }
+
+  getMinuteData(time: string, clickedSymbol: string) {
+    const url = 'https://cheesepy.com/stockprice/TIME_SERIES_INTRADAY/' + time + '/' + clickedSymbol;
+    return this.http.get(url)
+    .map(res => res.json());
+  }
+
+  getDaysStockData(type: string, clickedSymbol: string) {
+    const url = 'http://cheesepy.com/stockprice/TIME_SERIES_' + type + '/1/' + clickedSymbol;
     return this.http.get(url)
     .map(res => res.json());
   }
 
   getStocksBySymbol(symbol: string) {
-    return this.http.get('https://www.cheesepy.com/stocks/?Symbol__regex=/^' + symbol + '/i')
+    return this.http.get('https://www.cheesepy.com/stocks/?Symbol=' + symbol)
     .map(res => res.json());
   }
 

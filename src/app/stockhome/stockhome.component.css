@@ -16,3 +16,18 @@
     width: 180px;
     float: right;
 }
+
+.subtitle {
+    color: gray;
+    font-size: 0.75em;
+}
+
+.title {
+    color: black;
+    font-size: 0.9em;
+}
+
+.difference {
+    color: green;
+    font-size: 0.93em;
+}
