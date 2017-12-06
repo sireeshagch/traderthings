@@ -32,7 +32,7 @@
                 <tbody>
                     <tr *ngFor="let stock of pagedItems; let i=index">
                         <td class="col-md-1 "> {{(i+1)+(10*(pager.currentPage-1))}}</td>
-                        <td class="col-md-2 "><a class="btn btn-link " (click)="fetchStockDetails(stock) " data-target="#stockModal ">{{stock.Symbol}}</a></td>
+                        <td class="col-md-2 ">{{stock.Symbol}}</td>
                         <td class="col-md-2 ">{{stock.Name}}</td>
                         <td class="col-md-2 ">{{stock.MarketCap}}</td>
                         <td class="col-md-2 ">{{stock.Sector}}</td>
@@ -61,30 +61,73 @@
                                     <a class="btn btn-link " (click)="setPage(pager.totalPages) ">Last</a>
                                 </li>
                             </ul>
+                            <hr>
                         </td>
                     </tr>
                 </tfoot>
             </table>
+
         </div>
     </div>
 
+    <div class="container">
 
-    <!-- View Stock Modal-->
-    <div *ngIf="displayStock!=null" id="stockModal ">
+        <ul class="nav nav-tabs">
+            <li class="nav active"> <a (click)="fetchTimelyData('1m')" data-toggle="tab"> 2H (1min) </a></li>
+            <li class="nav"> <a (click)="fetchTimelyData('5m')" data-toggle="tab"> 1D (5min) </a></li>
+            <li class="nav"> <a (click)="fetchTimelyData('1d')" data-toggle="tab"> 4M (Daily) </a></li>
+            <li class="nav"> <a (click)="fetchTimelyData('1w')" data-toggle="tab"> 18Y (Weekly) </a></li>
+            <li class="nav"> <a (click)="fetchTimelyData('1Mon')" data-toggle="tab"> 18Y (Monthly) </a></li>
+        </ul>
 
-        <div class="text-center ">
-            <div class="container-fluid ">
+        <div class="tab-content">
 
-                <div class="well ">
-                    <!-- <button type="button " class="close pull-right glyphicon glyphicon-refresh"></button> -->
+            <div class="tab-pane fade in active">
+                <div *ngIf="displayStock!=null" id="stockModal ">
+                    <blockquote>
+                        <b>
+                            {{displayStock.Name}} ({{displayStock.Symbol}})
+                        </b>
+                        <p>
+                            <span class='subtitle'>NasdaqGS - NasdaqGS Real Time Price. Currency in USD
+                                  </span>
+                        </p>
+                        <p>
+                            <b class='closevalue'>{{latestClose}} </b> <span class='difference'> {{sign}}{{difference}}  {{percentage}}</span>
+                            <br><span class='subtitle'> {{latestTime}} </span>
+                        </p>
+                    </blockquote>
 
-                    <p class="pull-left">Showing chart for {{displayStock.Name}} ({{displayStock.Symbol}})</p>
-                    <app-spinner></app-spinner>
-                    <div id="chart"></div>
+                    <!-- <h3 class="pull-left">{{displayStock.Name}} ({{displayStock.Symbol}})</h3>
+                    <h4 class="pull-left">{{latestClose}}</h4> -->
+                    <div class="text-center ">
+                        <div class="container-fluid ">
+
+                            <div class="well ">
+                                <app-spinner></app-spinner>
+                                <div id="chart">Loading chart...</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="tab-pane fade in">Content inside tab B
+
+            </div>
+
+            <div class="tab-pane fade in">Content inside tab C
+            </div>
+
+            <div class="tab-pane fade in">Content inside tab D
+            </div>
+            <div class="tab-pane fade in">Content inside tab E
+            </div>
         </div>
-    </div>
+
+    </div> `
+
+
 
 
 </ng-template>

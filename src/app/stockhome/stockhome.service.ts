@@ -30,10 +30,7 @@ export class StockHomeService {
      return  this.http.get('https://newsapi.org/v1/articles?source=financial-times&sortBy=latest&apiKey=306de7eed4074f128a334a4cefef1881')
       .map(res => res.json());
    }
-   getPopularNews() {
-    return  this.http.get('https://newsapi.org/v1/articles?source=financial-times&sortBy=latest&apiKey=306de7eed4074f128a334a4cefef1881')
-     .map(res => res.json());
-  }
+
   getTopNews() {
     return  this.http.get('https://newsapi.org/v1/articles?source=financial-times&sortBy=top&apiKey=306de7eed4074f128a334a4cefef1881')
     .map(res => res.json());

@@ -1,4 +1,4 @@
-export class MinuteData{
+export class MinuteData {
   metaData: JSON;
   timeSeries: JSON;
 }

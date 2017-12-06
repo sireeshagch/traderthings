@@ -23,6 +23,9 @@ export class StockhomeComponent implements OnInit {
   dowTSArray: TimeSeriesData[] = new Array<TimeSeriesData>();
   latestClose = [];
   prevClose = [];
+  difference = [];
+  percentage = [];
+  sign = [];
   chartData = {close: [], open: [], high: [], low: [], time: []};
 
   pager: any = {}; // pager object
@@ -68,8 +71,16 @@ export class StockhomeComponent implements OnInit {
               chartDataJSON.unshift(cdata);
               j++;
             }
-            // this.latestClose[0] = this.snpTSArray[0].data['4. close'];
-            // this.prevClose[0] = this.snpTSArray[1].data['4. close'];
+            this.latestClose[0] = Number(this.snpTSArray[0].data['4. close']).toFixed(2);
+            this.prevClose[0] = Number(this.snpTSArray[1].data['4. close']).toFixed(2);
+            this.difference[0] = Number(Number(this.latestClose[0]) - Number(this.prevClose[0])).toFixed(2);
+            if (Math.sign(Number(this.difference[0])) === 1) {
+              this.sign[0] = '+';
+            } else if (Math.sign(Number(this.difference[0])) === -1) {
+              this.sign[0] = '-';
+            }
+            this.percentage[0] = '(' + this.sign[0] +
+                              Number((Number(this.difference[0]) / Number(this.prevClose[0])) * 100).toFixed(2) + '%)';
 
             setTimeout(this.drawTimeChart('#chart1', chartDataJSON, this.schart), 1000);
 
@@ -91,13 +102,18 @@ export class StockhomeComponent implements OnInit {
               high: this.dowTSArray[j].data['2. high'], low: this.dowTSArray[j].data['3. low'],
               close: this.dowTSArray[j].data['4. close']};
               chartDataJSON.unshift(cdata);
-              console.log('dow dates: ' + chartDataJSON[j].time);
-
               j++;
             }
-            this.latestClose[1] = this.dowTSArray[0].data['4. close'];
-            this.prevClose[1] = this.dowTSArray[1].data['4. close'];
-
+            this.latestClose[1] = Number(this.dowTSArray[0].data['4. close']).toFixed(2);
+            this.prevClose[1] = Number(this.dowTSArray[1].data['4. close']).toFixed(2);
+            this.difference[1] = Number(Number(this.latestClose[1]) - Number(this.prevClose[1])).toFixed(2);
+            if (Math.sign(Number(this.difference[1])) === 1) {
+              this.sign[1] = '+';
+            } else if (Math.sign(Number(this.difference[1])) === -1) {
+              this.sign[1] = '-';
+            }
+            this.percentage[1] = '(' + this.sign[1] +
+                              Number((Number(this.difference[1]) / Number(this.prevClose[1])) * 100).toFixed(2) + '%)';
             this.drawTimeChart('#chart2', chartDataJSON, this.dchart);
     });
 
@@ -120,9 +136,16 @@ export class StockhomeComponent implements OnInit {
               chartDataJSON.unshift(cdata);
               j++;
             }
-            // console.log('nasdaq chartJSON:' + chartDataJSON[0]['time']);
-            // this.latestClose[2] = this.nasdaqTSArray[0].data['4. close'];
-            // this.prevClose[2] = this.nasdaqTSArray[1].data['4. close'];
+            this.latestClose[2] = Number(this.nasdaqTSArray[0].data['4. close']).toFixed(2);
+            this.prevClose[2] = Number(this.nasdaqTSArray[1].data['4. close']).toFixed(2);
+            this.difference[2] = Number(Number(this.latestClose[2]) - Number(this.prevClose[2])).toFixed(2);
+            if (Math.sign(Number(this.difference[2])) === 1) {
+              this.sign[2] = '+';
+            } else if (Math.sign(Number(this.difference[2])) === -1) {
+              this.sign[2] = '-';
+            }
+            this.percentage[2] = '(' + this.sign[2] +
+                              Number((Number(this.difference[2]) / Number(this.prevClose[2])) * 100).toFixed(2) + '%)';
 
             this.drawTimeChart('#chart3', chartDataJSON, this.nchart);
 
@@ -144,15 +167,6 @@ export class StockhomeComponent implements OnInit {
 
   getTopNews() {
     this.stockhomeService.getTopNews()
-    .subscribe(news => {
-      this.news = news;
-      this.articles = news.articles;
-      this.setPage(1);
-    });
-  }
-
-  getPopularNews() {
-    this.stockhomeService.getNews()
     .subscribe(news => {
       this.news = news;
       this.articles = news.articles;

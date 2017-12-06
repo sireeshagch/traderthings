@@ -30,3 +30,17 @@
 .pointer {
     cursor: pointer;
 }
+
+.closevalue {
+    font-size: 1.5em;
+}
+
+.difference {
+    color: green;
+    font-size: 0.93em;
+}
+
+.subtitle {
+    color: gray;
+    font-size: 0.75em;
+}

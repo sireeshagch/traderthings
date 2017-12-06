@@ -9,6 +9,9 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import {TabModule} from 'angular-tabs-component';
+import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+
 
 import { AuthService } from './services/auth.service';
 
@@ -36,7 +39,7 @@ export const firebaseConfig = {
     CryptoComponent,
     RulesComponent,
     StockhomeComponent
-  ],
+    ],
   imports: [
     BrowserModule,
     HttpModule,
@@ -47,7 +50,9 @@ export const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    Ng4LoadingSpinnerModule
+    Ng4LoadingSpinnerModule,
+    TabModule,
+    Ng2AutoCompleteModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
