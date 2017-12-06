@@ -29,7 +29,7 @@ export class StockService {
   }
 
   getDaysStockData(type: string, clickedSymbol: string) {
-    const url = 'http://cheesepy.com/stockprice/TIME_SERIES_' + type + '/1/' + clickedSymbol;
+    const url = 'https://cheesepy.com/stockprice/TIME_SERIES_' + type + '/1/' + clickedSymbol;
     return this.http.get(url)
     .map(res => res.json());
   }
