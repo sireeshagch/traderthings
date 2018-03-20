@@ -25,20 +25,35 @@
 
                     <form class="navbar-form navbar-right" (ngSubmit)="searchStock()" role="search">
                         <div class="form-group">
-                            <input id='searchInput' type="text" (keyup)=filter($event) autocomplete="off" placeholder="Search for symbols or companies Eg: AAPL, Microsoft etc" [(ngModel)]="searchString" name="searchString" class="form-control mySearchBox">
+                            <input *ngIf="!isCryptoPage" id='searchInput' type="text" (keyup)=filter($event) autocomplete="off" placeholder="Search for symbols or companies Eg: AAPL, Microsoft etc" [(ngModel)]="searchString" name="searchString" class="form-control mySearchBox">
+                            <input *ngIf="isCryptoPage" id='searchInput' type="text" (keyup)=filter($event) autocomplete="off" placeholder="Search for Crypto currencies Eg: BTC, Eherium etc" [(ngModel)]="searchString" name="searchString" class="form-control mySearchBox">
                         </div>
                         <button type="submit" class="btn btn-default">Search </button>
 
                         <button type="button" data-toggle="modal" data-target="#loginModal" class="btn btn-default" *ngIf="!isLoggedIn">Login </button>
                         <!-- <button class="btn btn-default" *ngIf="isLoggedIn">Logout</button> -->
 
-                        <div id="autoSuggestDiv" class="suggestions" *ngIf="filteredList.length > 0">
-                            <ul class="list-group-item" *ngFor="let item of filteredList; let idx=index">
-                                <li (click)="selectItem(item)" [class.complete-selected]="idx == selectedIdx">
+                        <div id="autoSuggestDiv" class="suggestions" *ngIf="filteredStockList.length > 0 || filteredCryptoList.length > 0">
+                            <ul class="list-group-item">
+                                <li *ngIf="filteredStockList.length !== 0"> Stocks</li>
+                            </ul>
+                            <ul class="list-group-item" *ngFor="let item of filteredStockList; let idx=index">
+                                <li (click)="selectStock(item, idx)" [class.complete-selected]="idx == selectedIdx">
                                     <!-- <a ng-click="select(item.Symbol)">{{item.Symbol}} - {{item.Name}}</a> -->
-                                    <a (click)="selectItem(item)">{{item.Symbol}} - {{item.Name}}</a>
+                                    <a (click)="selectStock(item, idx)">{{item.Symbol}} - {{item.Name}}</a>
                                 </li>
                             </ul>
+
+                            <ul class="list-group-item">
+                                <li> Crypto currencies</li>
+                            </ul>
+                            <ul class="list-group-item" *ngFor="let item of filteredCryptoList; let idx=index;">
+                                <li (click)="selectCrypto(item, idx+filteredStockList.length)" [class.complete-selected]="idx+filteredStockList.length == selectedIdx">
+                                    <!-- <a ng-click="select(item.Symbol)">{{item.Symbol}} - {{item.Name}}</a> -->
+                                    <a (click)="selectCrypto(item, idx+filteredStockList.length)">{{item.code}} - {{item.name}}</a>
+                                </li>
+                            </ul>
+
                         </div>
 
                         <div class="btn btn-default" *ngIf="isLoggedIn">
@@ -61,7 +76,7 @@
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <button id='modal-close-btn' type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Login</h4>
                         </div>
                         <div class="modal-body">
@@ -86,8 +101,8 @@
                         </div>
                         <div class=" modal-footer">
                             <div class="text-center">
-                                <p>forgot your password? <a href="#">click here</a></p>
-                                <p>new user? <a href="#">create new account</a></p>
+                                <p>Forgot your password? <a href="#">Click Here</a></p>
+                                <p>New User? <a (click)="navigateToSignup()">Create New Account</a></p>
                                 <br>
                                 <p>(or)</p> <br>
                                 <button type="button" (click)="login()" data-dismiss="modal" class="btn btn-default">Sign in with Google</button>
