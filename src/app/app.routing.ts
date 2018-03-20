@@ -3,6 +3,7 @@ import { StockComponent } from './stock/stock.component';
 import { CryptoComponent } from './crypto/crypto.component';
 import { RulesComponent } from './rules/rules.component';
 import { StockhomeComponent } from './stockhome/stockhome.component';
+import { SignupComponent } from './signup/signup.component';
 
 
 export const AppRoutes: any = [
@@ -10,7 +11,8 @@ export const AppRoutes: any = [
   { path: 'stock', component: StockComponent},
   { path: 'crypto', component: CryptoComponent},
   { path: 'rules', component: RulesComponent},
-  { path: 'stockhome', component: StockhomeComponent}
+  { path: 'stockhome', component: StockhomeComponent},
+  { path: 'signup', component: SignupComponent}
 ];
 
 export const AppComponents: any = [
@@ -18,5 +20,6 @@ export const AppComponents: any = [
   StockComponent,
   CryptoComponent,
   RulesComponent,
-  StockhomeComponent
+  StockhomeComponent,
+  SignupComponent
 ];

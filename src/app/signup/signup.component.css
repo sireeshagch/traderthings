@@ -1,0 +1,11 @@
+.divContainer {
+    width: 400px;
+}
+
+.errorContainer {
+    background-color: rgba(232, 65, 24, 0.3);
+    width: 380px;
+    height: 40px;
+    margin-bottom: 10px;
+    padding: 5px;
+}
