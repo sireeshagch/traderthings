@@ -1,4 +1,4 @@
-export class StockData{
+export class StockData {
   info: string;
   symbol: string;
   lastRefreshed: string;

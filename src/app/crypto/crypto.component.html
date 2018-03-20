@@ -1,3 +1,128 @@
-<p>
-  crypto works!
-</p>
+<div *ngIf="noSearchResults; else elsePart" class="text-center">
+    <div class="container-fluid">
+        <h4>No Search results found for "{{clickedCode}}"</h4>
+    </div>
+</div>
+
+<ng-template #elsePart>
+    <div class="text-center">
+        <div class="container-fluid">
+
+            <!-- <table class="search-results-header well">
+              <tr>
+                  <td>
+                      <p *ngIf="!noSearchResults" class="pull-left">{{pager.startIndex + 1}}-{{pager.endIndex + 1}} of {{stocks.length}} results for "{{clickedSymbol}}"</p>
+                  </td>
+                  <!-- <td>
+                      <a class="pull-left btn btn-link" (click)="getAllStocks()">View all Stocks</a>
+                  </td>
+              </tr>
+          </table> -->
+            <table class="table table-hover table-striped">
+                <thead>
+                    <!-- <tr class="text-center"> -->
+                    <th class="col-md-1 text-center">Sl No</th>
+                    <th class="pointer col-md-2 text-center">Code</th>
+                    <th class="col-md-2 text-center">Name</th>
+
+                    <!-- </tr> -->
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let crypto of pagedItems; let i=index">
+                        <td class="col-md-1 "> {{(i+1)+(10*(pager.currentPage-1))}}</td>
+                        <td class="col-md-2 ">{{crypto.code}}</td>
+                        <td class="col-md-2 ">{{crypto.name}}</td>
+                    </tr>
+                </tbody>
+
+
+                <tfoot>
+                    <tr class="text-center ">
+                        <td colspan="5 ">
+                            <ul class="pagination ">
+                                <li [ngClass]=" {disabled:pager.currentPage===1 } ">
+                                    <a class="btn btn-link " (click)="setPage(1) ">First</a>
+                                </li>
+                                <li [ngClass]="{disabled:pager.currentPage===1 } ">
+                                    <a class="btn btn-link " (click)="setPage(pager.currentPage - 1) ">Previous</a>
+                                </li>
+                                <li *ngFor="let page of pager.pages " [ngClass]="{active:pager.currentPage==page} ">
+                                    <a class="btn btn-link " (click)="setPage(page) ">{{page}}</a>
+                                </li>
+                                <li [ngClass]="{disabled:pager.currentPage===pager.totalPages} ">
+                                    <a class="btn btn-link " (click)="setPage(pager.currentPage + 1) ">Next</a>
+                                </li>
+                                <li [ngClass]="{disabled:pager.currentPage===pager.totalPages} ">
+                                    <a class="btn btn-link " (click)="setPage(pager.totalPages) ">Last</a>
+                                </li>
+                            </ul>
+                            <hr>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="container">
+
+        <ul class="nav nav-tabs">
+            <li class="nav active"> <a (click)="fetchTimelyData('Daily')" data-toggle="tab"> Daily </a></li>
+            <li class="nav"> <a (click)="fetchTimelyData('Weekly')" data-toggle="tab"> Weekly</a></li>
+            <li class="nav"> <a (click)="fetchTimelyData('Monthly')" data-toggle="tab"> Monthly </a></li>
+
+        </ul>
+
+        <div class="tab-content">
+
+            <div class="tab-pane fade in active">
+                <div *ngIf="displayCrypto!=null" id="stockModal ">
+                    <blockquote>
+                        <b>
+                          {{displayCrypto.name}} ({{displayCrypto.code}}) Price Chart
+                      </b>
+                        <!-- <p>
+                            <span class='subtitle'>NasdaqGS - NasdaqGS Real Time Price. Currency in USD
+                                </span>
+                        </p> -->
+                        <p>
+                            <b class='closevalue'>${{latestClose}}</b> <span class='difference'> USD {{percentage}}</span>
+                            <!-- <br><span class='subtitle'> {{latestTime}} </span> -->
+                        </p>
+                    </blockquote>
+
+                    <!-- <h3 class="pull-left">{{displayStock.Name}} ({{displayStock.Symbol}})</h3>
+                  <h4 class="pull-left">{{latestClose}}</h4> -->
+                    <div class="text-center ">
+                        <div class="container-fluid ">
+
+                            <div class="well ">
+                                <app-spinner></app-spinner>
+                                <div id="chart">Loading chart...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade in">Content inside tab B
+
+            </div>
+
+            <div class="tab-pane fade in">Content inside tab C
+            </div>
+
+            <div class="tab-pane fade in">Content inside tab D
+            </div>
+            <div class="tab-pane fade in">Content inside tab E
+            </div>
+        </div>
+
+    </div> `
+
+
+
+
+</ng-template>

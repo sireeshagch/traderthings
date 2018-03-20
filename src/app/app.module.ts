@@ -21,14 +21,21 @@ import { StockComponent } from './stock/stock.component';
 import { CryptoComponent } from './crypto/crypto.component';
 import { RulesComponent } from './rules/rules.component';
 import { StockhomeComponent } from './stockhome/stockhome.component';
+import { SignupComponent } from './signup/signup.component';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyBs1YSjLC267dDVMm3hj8SwB4oDE5Hv41I',
-  authDomain: 'stockoverflow-7a0a5.firebaseapp.com',
-  databaseURL: 'https://stockoverflow-7a0a5.firebaseio.com',
-  projectId: 'stockoverflow-7a0a5',
-  storageBucket: 'stockoverflow-7a0a5.appspot.com',
-  messagingSenderId: '731996450274'
+  apiKey: 'AIzaSyAhOIwxmIHnJsrnRWceZ-18jb17x4GZ8yc',
+  authDomain: 'traderthings-82651.firebaseapp.com',
+  databaseURL: 'https://traderthings-82651.firebaseio.com',
+  projectId: 'traderthings-82651',
+  storageBucket: '',
+  messagingSenderId: '642987332682'
+  // apiKey: 'AIzaSyBs1YSjLC267dDVMm3hj8SwB4oDE5Hv41I',
+  // authDomain: 'stockoverflow-7a0a5.firebaseapp.com',
+  // databaseURL: 'https://stockoverflow-7a0a5.firebaseio.com',
+  // projectId: 'stockoverflow-7a0a5',
+  // storageBucket: 'stockoverflow-7a0a5.appspot.com',
+  // messagingSenderId: '731996450274'
 };
 
 @NgModule({
@@ -38,7 +45,8 @@ export const firebaseConfig = {
     StockComponent,
     CryptoComponent,
     RulesComponent,
-    StockhomeComponent
+    StockhomeComponent,
+    SignupComponent
     ],
   imports: [
     BrowserModule,

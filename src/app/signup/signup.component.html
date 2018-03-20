@@ -1,0 +1,28 @@
+<div class="modal-body divContainer">
+    <form class="form-group" role="form">
+
+        <div *ngIf="errorString" class="text-danger errorContainer">
+            <p>{{errorString}}</p>
+        </div>
+        <div class="form-group">
+            <label> Full Name</label>
+            <input type="text" required [(ngModel)]="fullname" placeholder="Full Name" name="fullname" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label> Username</label>
+            <input type="text" required [(ngModel)]="email" placeholder="Username" name="username" class="form-control">
+        </div>
+
+
+        <div class="form-group">
+            <label> Password</label>
+            <input type="password" required [(ngModel)]="password" placeholder="password" name="pswd" class="form-control">
+        </div>
+
+
+
+        <input type="submit" (click)="onSignupPress()" data-dismiss="modal" class="btn btn btn-success" value="Login">
+
+    </form>
+</div>
