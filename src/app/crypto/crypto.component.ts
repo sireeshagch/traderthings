@@ -173,6 +173,7 @@ export class CryptoComponent implements OnInit {
       }
       this.ng4LoadingSpinnerService.hide();
 
+
       this.isLoading = false;
     });
   }
